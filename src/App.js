@@ -4,10 +4,8 @@ import 'firebase/auth';
 import React, { useState } from 'react';
 import './App.css';
 
-// import useCreateUserWithEmailAndPassword,
-// useSignInWithEmailAndPassword,
-// 'react-firebase-hooks/auth';
 // import { useCollectionData } from 'react-firebase-hooks/firestore';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 firebase.initializeApp(
     // Add config here
@@ -21,11 +19,10 @@ firebase.initializeApp(
     }
 );
 
-let user;
 function App() {
+    const [user] = useAuthState(firebase.auth());
     return (
         <div className='App'>
-            <section>{/* <SignIn /> */}</section>
             <section>{user ? <ChatRoom /> : <SignIn />}</section>
         </div>
     );
@@ -50,9 +47,9 @@ function SignIn() {
         try {
             const userCredential = await firebase
                 .auth()
+                // .setPersistence(firebase.auth.Auth.Persistence.SESSION)
                 .signInWithEmailAndPassword(email, password);
-            user = userCredential;
-            console.log(user);
+            console.log(userCredential.user);
             console.log('signedIn');
         } catch (error) {
             console.log(error);
