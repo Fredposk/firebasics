@@ -35,24 +35,17 @@ function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // const [
-    //     createUserWithEmailAndPassword,
-    //     user, loading, error
-    // ] = useCreateUserWithEmailAndPassword(firebase.auth());
-    // console.log(user);
-
     const createUserWithEmailAndPassword = async () => {
         try {
             const userCredential = await firebase
                 .auth()
                 .createUserWithEmailAndPassword(email, password);
             console.log(userCredential);
-            console.log('signedin');
+            console.log('signedInNewUser');
         } catch (error) {
             console.log(error);
         }
     };
-
     const signInWithEmailAndPassword = async () => {
         try {
             const userCredential = await firebase
@@ -60,12 +53,11 @@ function SignIn() {
                 .signInWithEmailAndPassword(email, password);
             user = userCredential;
             console.log(user);
-            console.log('signedin');
+            console.log('signedIn');
         } catch (error) {
             console.log(error);
         }
     };
-
     const signOut = () =>
         firebase
             .auth()
