@@ -4,10 +4,9 @@ import 'firebase/auth';
 import React, { useState } from 'react';
 import './App.css';
 
-import {
-    useCreateUserWithEmailAndPassword,
-    useSignInWithEmailAndPassword,
-} from 'react-firebase-hooks/auth';
+// import useCreateUserWithEmailAndPassword,
+// useSignInWithEmailAndPassword,
+// 'react-firebase-hooks/auth';
 // import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp(
@@ -22,18 +21,12 @@ firebase.initializeApp(
     }
 );
 
-// const auth = firebase.auth();
-// const firestore = firebase.firestore();
-
+let user;
 function App() {
     return (
         <div className='App'>
-            <header></header>
-            <section>
-                {' '}
-                <SignIn />
-            </section>
-            {/* <section>{user ? <ChatRoom /> : <SignIn />}</section> */}
+            <section>{/* <SignIn /> */}</section>
+            <section>{user ? <ChatRoom /> : <SignIn />}</section>
         </div>
     );
 }
@@ -42,18 +35,31 @@ function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [
-        createUserWithEmailAndPassword,
-        user,
-    ] = useCreateUserWithEmailAndPassword(firebase.auth());
-    console.log(user);
+    // const [
+    //     createUserWithEmailAndPassword,
+    //     user, loading, error
+    // ] = useCreateUserWithEmailAndPassword(firebase.auth());
+    // console.log(user);
+
+    const createUserWithEmailAndPassword = async () => {
+        try {
+            const userCredential = await firebase
+                .auth()
+                .createUserWithEmailAndPassword(email, password);
+            console.log(userCredential);
+            console.log('signedin');
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const signInWithEmailAndPassword = async () => {
         try {
             const userCredential = await firebase
                 .auth()
                 .signInWithEmailAndPassword(email, password);
-            console.log(userCredential);
+            user = userCredential;
+            console.log(user);
             console.log('signedin');
         } catch (error) {
             console.log(error);
@@ -70,7 +76,7 @@ function SignIn() {
             })
             .catch((error) => {
                 // An error happened.
-                console.log('error');
+                console.log('error', error);
             });
 
     return (
@@ -103,6 +109,34 @@ function SignIn() {
             <button className='sign-out' onClick={signOut}>
                 Sign out
             </button>
+        </>
+    );
+}
+
+function ChatRoom() {
+    return (
+        <>
+            <button className='sign-in'>BUtton bro</button>
+            <main>
+                {/* {messages &&
+                    messages.map((msg) => (
+                        <ChatMessage key={msg.id} message={msg} />
+                    ))} */}
+
+                {/* <span ref={dummy}></span> */}
+            </main>
+
+            {/* <form onSubmit={sendMessage}>
+                <input
+                    value={formValue}
+                    onChange={(e) => setFormValue(e.target.value)}
+                    placeholder='say something nice'
+                />
+
+                <button type='submit' disabled={!formValue}>
+                    🕊️
+                </button>
+            </form> */}
         </>
     );
 }
