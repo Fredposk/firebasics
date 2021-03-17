@@ -21,6 +21,18 @@ firebase.initializeApp(
 
 function App() {
     const [user] = useAuthState(firebase.auth());
+
+    // let user;
+    // firebase.auth().onAuthStateChanged(function (user) {
+    //     if (user) {
+    //         // User is signed in.
+    //         user = firebase.auth().currentUser;
+    //     } else {
+    //         // No user is signed in.
+    //         user = null;
+    //     }
+    // });
+
     return (
         <div className='App'>
             <section>{user ? <ChatRoom /> : <SignIn />}</section>
